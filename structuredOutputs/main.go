@@ -43,6 +43,8 @@ func main() {
 	log.Printf("%s (%d calories, %d allergens): %s\n",
 		item.Name, item.Calories, len(item.Allergens), item.Description)
 	fmt.Printf("\n\n%#v\n", item)
+
+	genData(timeout, g, model)
 }
 
 func getModel() (*genkit.Genkit, ai.Model) {
@@ -66,4 +68,14 @@ func getModel() (*genkit.Genkit, ai.Model) {
 		log.Fatal(err)
 	}
 	return g, model
+}
+
+func genData(ctx context.Context, g *genkit.Genkit, model ai.Model) {
+	item, _, err := genkit.GenerateData[MenuItem](ctx, g, ai.WithModel(model),
+		ai.WithPrompt("Invent a menu item for a pirate themed restaurant."),
+	)
+	if err != nil {
+		log.Fatal("generate: ", err)
+	}
+	fmt.Printf("\nNew Item:\n%#v\n", item)
 }
