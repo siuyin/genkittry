@@ -10,19 +10,24 @@ import (
 	"github.com/firebase/genkit/go/genkit"
 	"github.com/firebase/genkit/go/plugins/compat_oai/openai"
 	"github.com/openai/openai-go/option"
+	"github.com/siuyin/dflt"
 )
 
 func main() {
+	baseURL := dflt.EnvString("BASE_URL", "http://localhost:11434/v1")
+	modelName := dflt.EnvString("MODEL", "gemma3:1b")
+	log.Printf("BASE_URL=%s MODEL=%s", baseURL, modelName)
+
 	ctx := context.Background()
 	var err error
 
-	mySvr := &openai.OpenAI{APIKey: "Ollama", Opts: []option.RequestOption{option.WithBaseURL("http://localhost:11434/v1")}}
+	mySvr := &openai.OpenAI{APIKey: "Ollama", Opts: []option.RequestOption{option.WithBaseURL(baseURL)}}
 
 	g, err := genkit.Init(ctx, genkit.WithPlugins(mySvr))
 	if err != nil {
 		log.Fatalf("could not initialize Genkit: %v", err)
 	}
-	model, err := mySvr.DefineModel(g, "gemma3:1b",
+	model, err := mySvr.DefineModel(g, modelName,
 		ai.ModelInfo{Supports: &ai.ModelSupports{Multiturn: true, SystemRole: true, Tools: false, Media: false}},
 	)
 	if err != nil {
