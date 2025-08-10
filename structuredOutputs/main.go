@@ -21,25 +21,9 @@ type MenuItem struct {
 }
 
 func main() {
-	baseURL := dflt.EnvString("BASE_URL", "http://localhost:11434/v1")
-	modelName := dflt.EnvString("MODEL", "mistral") // mistral:7b, gemma3:4b also works well
-	log.Printf("BASE_URL=%s MODEL=%s", baseURL, modelName)
+	g, model := getModel()
 
 	ctx := context.Background()
-	var err error
-
-	mySvr := &openai.OpenAI{APIKey: "Ollama", Opts: []option.RequestOption{option.WithBaseURL(baseURL)}}
-
-	g, err := genkit.Init(ctx, genkit.WithPlugins(mySvr))
-	if err != nil {
-		log.Fatalf("could not initialize Genkit: %v", err)
-	}
-	model, err := mySvr.DefineModel(g, modelName,
-		ai.ModelInfo{Supports: &ai.ModelSupports{Multiturn: true, SystemRole: true, Tools: false, Media: false}},
-	)
-	if err != nil {
-		log.Fatal(err)
-	}
 	timeout, cancel := context.WithTimeout(ctx, 120*time.Second)
 	defer cancel()
 
@@ -59,4 +43,27 @@ func main() {
 	log.Printf("%s (%d calories, %d allergens): %s\n",
 		item.Name, item.Calories, len(item.Allergens), item.Description)
 	fmt.Printf("\n\n%#v\n", item)
+}
+
+func getModel() (*genkit.Genkit, ai.Model) {
+	baseURL := dflt.EnvString("BASE_URL", "http://localhost:11434/v1")
+	modelName := dflt.EnvString("MODEL", "mistral") // mistral:7b, gemma3:4b also works well
+	log.Printf("BASE_URL=%s MODEL=%s", baseURL, modelName)
+
+	ctx := context.Background()
+	var err error
+
+	mySvr := &openai.OpenAI{APIKey: "Ollama", Opts: []option.RequestOption{option.WithBaseURL(baseURL)}}
+
+	g, err := genkit.Init(ctx, genkit.WithPlugins(mySvr))
+	if err != nil {
+		log.Fatalf("could not initialize Genkit: %v", err)
+	}
+	model, err := mySvr.DefineModel(g, modelName,
+		ai.ModelInfo{Supports: &ai.ModelSupports{Multiturn: true, SystemRole: true, Tools: false, Media: false}},
+	)
+	if err != nil {
+		log.Fatal(err)
+	}
+	return g, model
 }
