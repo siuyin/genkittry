@@ -7,3 +7,7 @@ The bug was fixed but there was a reversion.
 See: https://github.com/firebase/genkit/issues/719
 
 In v0.6.2 the Timeout parameter is not present.
+
+### Ollama in OpenAI compatibility mode
+
+See: helloOllamOpenAICompat. This works well with a timeout context.
