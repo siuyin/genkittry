@@ -21,7 +21,7 @@ func main() {
 		log.Fatalf("could not initialize Genkit: %v", err)
 	}
 
-	resp, err := genkit.Generate(ctx, g, ai.WithPrompt("What is the meaning of life?"))
+	resp, err := genkit.Generate(ctx, g, ai.WithPrompt("How many planets are there?"))
 	if err != nil {
 		log.Fatalf("could not generate model response: %v", err)
 	}
