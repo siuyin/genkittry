@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"time"
 
@@ -21,7 +22,7 @@ type MenuItem struct {
 
 func main() {
 	baseURL := dflt.EnvString("BASE_URL", "http://localhost:11434/v1")
-	modelName := dflt.EnvString("MODEL", "mistral")
+	modelName := dflt.EnvString("MODEL", "mistral") // mistral:7b, gemma3:4b also works well
 	log.Printf("BASE_URL=%s MODEL=%s", baseURL, modelName)
 
 	ctx := context.Background()
@@ -61,4 +62,5 @@ func main() {
 
 	log.Printf("%s (%d calories, %d allergens): %s\n",
 		item.Name, item.Calories, len(item.Allergens), item.Description)
+	fmt.Printf("\n\n%#v\n", item)
 }
