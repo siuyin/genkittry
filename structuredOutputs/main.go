@@ -46,10 +46,6 @@ func main() {
 	resp, err := genkit.Generate(timeout, g, ai.WithModel(model),
 		ai.WithPrompt("Invent a menu item for a pirate themed restaurant."),
 		ai.WithOutputType(&MenuItem{}),
-		// ai.WithStreaming(func(ctx context.Context, chunk *ai.ModelResponseChunk) error {
-		// 	fmt.Print(chunk.Text())
-		// 	return nil
-		// }),
 	)
 	if err != nil {
 		log.Println("generate: ", err) // ollama models like gemma3:1b output ```json. Even mistral fails to parse into MenuItem
