@@ -32,7 +32,7 @@ func main() {
 		ai.WithOutputType(&MenuItem{}),
 	)
 	if err != nil {
-		log.Println("generate: ", err) // ollama models like gemma3:1b output ```json. Even mistral fails to parse into MenuItem
+		log.Fatal("generate: ", err)
 	}
 
 	var item MenuItem
