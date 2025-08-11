@@ -26,3 +26,5 @@ This is an example of parameterising the theme of the menu item to be generated.
 
 tools/weather was tested with Mistral (7b) and is very sensitive to the prompt.
 You almost need to use the exact words (eg. get current time in UTC) to get the tool called.
+
+qwen3:1.7b works well for tool calling.
