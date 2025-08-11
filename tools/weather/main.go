@@ -18,6 +18,8 @@ type WeatherInput struct {
 	Location string `json:"location" jsonschema_description:"Location to get weather for"`
 }
 
+type Empty struct{}
+
 func main() {
 	ctx := context.Background()
 	timeout, cancel := context.WithTimeout(ctx, 300*time.Second)
@@ -32,10 +34,16 @@ func main() {
 			log.Printf("Tool 'getWeather' called for location: %s", input.Location)
 			return fmt.Sprintf("The current weather in %s is 30°C and sunny.", input.Location), nil
 		})
+	getCurrentTimeTool := genkit.DefineTool(
+		g, "getCurrentTime", "Gets the current time in UTC",
+		func(ctx *ai.ToolContext, input WeatherInput) (string, error) {
+			log.Printf("Tool 'getCurrentTime' called")
+			return fmt.Sprintf("The current time  %s UTC", time.Now().UTC().Format("15:04:05")), nil
+		})
 
-	resp, err := genkit.Generate(timeout, g, ai.WithPrompt("What is the weather in Singapore?"),
+	resp, err := genkit.Generate(timeout, g, ai.WithPrompt("What is the weather in Singapore? Also what is the time in UTC?"),
 		ai.WithModel(model),
-		ai.WithTools(getWeatherTool),
+		ai.WithTools(getWeatherTool, getCurrentTimeTool),
 	)
 	if err != nil {
 		log.Fatal("generate: ", err)
