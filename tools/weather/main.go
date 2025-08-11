@@ -44,10 +44,11 @@ func main() {
 		})
 
 	prompt := genkit.LookupPrompt(g, "weather")
+	dump(prompt)
 	//prompt := genkit.LookupPrompt(g, "time")
 	//prompt := genkit.LookupPrompt(g, "weatherCity")
 	//resp, err := prompt.Execute(timeout, ai.WithModel(model), ai.WithInput(map[string]any{"city": "Kuala Lumpur"}))
-	resp, err := prompt.Execute(timeout, ai.WithModel(model))
+	resp, err := prompt.Execute(timeout, ai.WithModel(model), ai.WithConfig(map[string]any{"enable_thinking": false}))
 	//resp, err := genkit.Generate(timeout, g, ai.WithPrompt("What is the weather in Singapore? Also what is the time in UTC?"),
 	//	ai.WithModel(model),
 	//	ai.WithTools(getWeatherTool, getCurrentTimeTool),
@@ -79,4 +80,17 @@ func getModel() (*genkit.Genkit, ai.Model) {
 		log.Fatal(err)
 	}
 	return g, model
+}
+
+func dump(p *ai.Prompt) {
+	ctx := context.Background()
+	genActionOps, err := p.Render(ctx, struct{}{})
+	if err != nil {
+		log.Fatal("dump: ", err)
+	}
+
+	fmt.Println("\n------ dump ----\n")
+	fmt.Printf("%#v\n", genActionOps)
+
+	fmt.Printf("\n\t%#v\n", genActionOps.Output)
 }

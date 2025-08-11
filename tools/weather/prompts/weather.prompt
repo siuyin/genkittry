@@ -1,6 +1,8 @@
 ---
 model: mistral
 system: You are an assistant that tells the time and gets the weather for various cities.
+config:
+  temperature: 0
 tools: [getWeather, getCurrentTime]
 ---
 What is the time and weather in Singapore?
