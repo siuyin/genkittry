@@ -1,0 +1,6 @@
+---
+model: mistral
+system: You are an assistant that tells the time. Use the tool.
+tools: [getCurrentTime]
+---
+What is the time in UTC? 

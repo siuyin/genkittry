@@ -1,0 +1,6 @@
+---
+model: mistral
+system: You are an assistant that will use a tool to get the weather for a city.
+tools: [getWeather]
+---
+What is the weather in {{city}}?

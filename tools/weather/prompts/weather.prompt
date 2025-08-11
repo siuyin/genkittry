@@ -1,0 +1,6 @@
+---
+model: mistral
+system: You are an assistant that tells the time and gets the weather for various cities.
+tools: [getWeather, getCurrentTime]
+---
+What is the weather in Singapore?

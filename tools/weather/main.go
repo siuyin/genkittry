@@ -26,7 +26,8 @@ func main() {
 	defer cancel()
 
 	g, model := getModel()
-	getWeatherTool := genkit.DefineTool(
+	//getWeatherTool := genkit.DefineTool(
+	genkit.DefineTool(
 		g, "getWeather", "Gets the current weather in a given location",
 		func(ctx *ai.ToolContext, input WeatherInput) (string, error) {
 			// Here, we would typically make an API call or database query. For this
@@ -34,17 +35,22 @@ func main() {
 			log.Printf("Tool 'getWeather' called for location: %s", input.Location)
 			return fmt.Sprintf("The current weather in %s is 30°C and sunny.", input.Location), nil
 		})
-	getCurrentTimeTool := genkit.DefineTool(
+	//getCurrentTimeTool := genkit.DefineTool(
+	genkit.DefineTool(
 		g, "getCurrentTime", "Gets the current time in UTC",
 		func(ctx *ai.ToolContext, input WeatherInput) (string, error) {
 			log.Printf("Tool 'getCurrentTime' called")
 			return fmt.Sprintf("The current time  %s UTC", time.Now().UTC().Format("15:04:05")), nil
 		})
 
-	resp, err := genkit.Generate(timeout, g, ai.WithPrompt("What is the weather in Singapore? Also what is the time in UTC?"),
-		ai.WithModel(model),
-		ai.WithTools(getWeatherTool, getCurrentTimeTool),
-	)
+	//prompt := genkit.LookupPrompt(g, "weather")
+	//prompt := genkit.LookupPrompt(g, "time")
+	prompt := genkit.LookupPrompt(g, "weatherCity")
+	resp, err := prompt.Execute(timeout, ai.WithModel(model), ai.WithInput(map[string]any{"city": "Timbuktu"}))
+	//resp, err := genkit.Generate(timeout, g, ai.WithPrompt("What is the weather in Singapore? Also what is the time in UTC?"),
+	//	ai.WithModel(model),
+	//	ai.WithTools(getWeatherTool, getCurrentTimeTool),
+	//)
 	if err != nil {
 		log.Fatal("generate: ", err)
 	}
