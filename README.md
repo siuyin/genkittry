@@ -21,3 +21,8 @@ Gemma3 (1b) is intermitted. 4b is sometime intermittent as well. Retry in event 
 See flows/main.go .
 
 This is an example of parameterising the theme of the menu item to be generated.
+
+## Tool calling
+
+tools/weather was tested with Mistral (7b) and is very sensitive to the prompt.
+You almost need to use the exact words (eg. get current time in UTC) to get the tool called.
