@@ -8,8 +8,7 @@ import (
 
 	"github.com/firebase/genkit/go/ai"
 	"github.com/firebase/genkit/go/genkit"
-	"github.com/firebase/genkit/go/plugins/compat_oai/openai"
-	"github.com/openai/openai-go/option"
+	"github.com/firebase/genkit/go/plugins/ollama"
 	"github.com/siuyin/dflt"
 )
 
@@ -67,18 +66,23 @@ func getModel() (*genkit.Genkit, ai.Model) {
 	ctx := context.Background()
 	var err error
 
-	mySvr := &openai.OpenAI{APIKey: "Ollama", Opts: []option.RequestOption{option.WithBaseURL(baseURL), option.WithJSONSet("think", "false")}}
+	//mySvr := &openai.OpenAI{APIKey: "Ollama", Opts: []option.RequestOption{option.WithBaseURL(baseURL), option.WithJSONSet("think", "false")}}
+	mySvr := &ollama.Ollama{ServerAddress: baseURL}
 
 	g, err := genkit.Init(ctx, genkit.WithPlugins(mySvr))
 	if err != nil {
 		log.Fatalf("could not initialize Genkit: %v", err)
 	}
-	model, err := mySvr.DefineModel(g, modelName,
-		ai.ModelInfo{Supports: &ai.ModelSupports{Multiturn: true, SystemRole: true, Tools: true, Media: false}},
+	//model, err := mySvr.DefineModel(g, modelName,
+	//	ai.ModelInfo{Supports: &ai.ModelSupports{Multiturn: true, SystemRole: true, Tools: true, Media: false}},
+	//)
+	//if err != nil {
+	//	log.Fatal(err)
+	//}
+	model := mySvr.DefineModel(g,
+		ollama.ModelDefinition{Name: modelName, Type: "chat"},
+		&ai.ModelInfo{Supports: &ai.ModelSupports{Multiturn: true, SystemRole: true, Tools: true, Media: false}},
 	)
-	if err != nil {
-		log.Fatal(err)
-	}
 	return g, model
 }
 
