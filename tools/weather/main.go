@@ -33,7 +33,7 @@ func main() {
 			// Here, we would typically make an API call or database query. For this
 			// example, we just return a fixed value.
 			log.Printf("Tool 'getWeather' called for location: %s", input.Location)
-			return fmt.Sprintf("The current weather in %s is 30°C and sunny.", input.Location), nil
+			return fmt.Sprintf("The current weather in %s is 31.4159°C and sunny.", input.Location), nil
 		})
 	//getCurrentTimeTool := genkit.DefineTool(
 	genkit.DefineTool(
@@ -44,7 +44,7 @@ func main() {
 		})
 
 	prompt := genkit.LookupPrompt(g, "weather")
-	dump(prompt)
+	//dump(prompt)
 	//prompt := genkit.LookupPrompt(g, "time")
 	//prompt := genkit.LookupPrompt(g, "weatherCity")
 	//resp, err := prompt.Execute(timeout, ai.WithModel(model), ai.WithInput(map[string]any{"city": "Kuala Lumpur"}))
@@ -67,7 +67,7 @@ func getModel() (*genkit.Genkit, ai.Model) {
 	ctx := context.Background()
 	var err error
 
-	mySvr := &openai.OpenAI{APIKey: "Ollama", Opts: []option.RequestOption{option.WithBaseURL(baseURL)}}
+	mySvr := &openai.OpenAI{APIKey: "Ollama", Opts: []option.RequestOption{option.WithBaseURL(baseURL), option.WithJSONSet("think", "false")}}
 
 	g, err := genkit.Init(ctx, genkit.WithPlugins(mySvr))
 	if err != nil {
