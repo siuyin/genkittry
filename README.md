@@ -1,5 +1,10 @@
 # Experiments with firebase's genkit
 
+## Summary
+
+Structured Output: Gemma3:4b and Mistral:7b
+Tool Calling: qwen3:1.7b
+
 ## Ollama
 There is a problem with the ollama plugin.
 The bug was fixed but there was a reversion.
