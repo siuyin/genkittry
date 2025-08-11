@@ -43,11 +43,11 @@ func main() {
 			return fmt.Sprintf("The current time  %s UTC", time.Now().UTC().Format("15:04:05")), nil
 		})
 
-	//prompt := genkit.LookupPrompt(g, "weather")
+	prompt := genkit.LookupPrompt(g, "weather")
 	//prompt := genkit.LookupPrompt(g, "time")
-	prompt := genkit.LookupPrompt(g, "weatherCity")
-	resp, err := prompt.Execute(timeout, ai.WithModel(model), ai.WithInput(map[string]any{"city": "Kuala Lumpur"}))
-	//resp, err := prompt.Execute(timeout, ai.WithModel(model))
+	//prompt := genkit.LookupPrompt(g, "weatherCity")
+	//resp, err := prompt.Execute(timeout, ai.WithModel(model), ai.WithInput(map[string]any{"city": "Kuala Lumpur"}))
+	resp, err := prompt.Execute(timeout, ai.WithModel(model))
 	//resp, err := genkit.Generate(timeout, g, ai.WithPrompt("What is the weather in Singapore? Also what is the time in UTC?"),
 	//	ai.WithModel(model),
 	//	ai.WithTools(getWeatherTool, getCurrentTimeTool),
